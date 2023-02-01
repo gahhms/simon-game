@@ -25,15 +25,17 @@ function nextSequence() { //calls for next random colour after comparison to pla
     $("h1").html("Level "+level);
     var randomNumber = Math.floor(Math.random()*4);
     var randomChosenColour = buttonColours[randomNumber];
+    gamePattern.push(randomChosenColour);
+
     $("#"+randomChosenColour).fadeOut(100).fadeIn();
     playSound(randomChosenColour);
-    gamePattern.push(randomChosenColour);
 
 }
 
 function checkAnswer(level) { //checks if gamePattern and userClickedPattern are alike
 
     if (gamePattern[level] === userClickedPattern[level]) {
+      if (userClickedPattern.length === gamePattern.length){
         $("body").addClass("next-level");
         setTimeout(function(){
     
@@ -47,7 +49,7 @@ function checkAnswer(level) { //checks if gamePattern and userClickedPattern are
     
         }, 1000); 
         
-    } else {
+    }} else {
         startOver();
         $("h1").html("YOU LOSE! Press ANY Key to Start");  
     }
@@ -67,16 +69,14 @@ function checkAnswer(level) { //checks if gamePattern and userClickedPattern are
     level = 0;
   }
 
-$(".btn").click(function (e) { //get play input and push to userCLickedPattern
+$(".btn").click(function () { //get play input and push to userCLickedPattern
      if (start === true) {   
         playSound($(this).attr("id"));
         animatePress($(this).attr("id"))
         var userChosenColour = $(this).attr("id");
         userClickedPattern.push(userChosenColour);
+          checkAnswer(userClickedPattern.length-1);;
 
-        if (userClickedPattern.length === level) {
-             checkAnswer(level-1);
-        }   
     }   
     
 });
